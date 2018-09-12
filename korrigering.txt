@@ -1,13 +1,13 @@
 Overall, this is a very good and readable solution. You will have to fix the following issues, however:
 
-[] Rewrite "rulesApply" in point-free style. The parameter "p" is quite
+[x] Rewrite "rulesApply" in point-free style. The parameter "p" is quite
    straightforward to remove using function composition, "pps" is a bit
    trickier.
 
-[] Change "rulesCompile" to only make the patterns lowercase and not the
+[x] Change "rulesCompile" to only make the patterns lowercase and not the
    replies.
 
-[] Remove the "r" parameter of "reductionsApply" to make it point-free.
+[x] Remove the "r" parameter of "reductionsApply" to make it point-free.
 
 [] Rewrite "transformationsApply" in point-free style. (Hint: You may find the
    fold functions in the standard prelude useful.)
