@@ -47,7 +47,7 @@ rulesApply :: [PhrasePair] -> Phrase -> Phrase
   -- If the transformationsApply fuction returns something, apply the id
   -- function to the result (does nothing) and return that. Otherwise return an
   -- empty list if the result is Nothing.
-rulesApply pps p = maybe [] id (transformationsApply "*" reflect pps p)
+rulesApply = (maybe [] id .) . transformationsApply "*" reflect
 
 reflect :: Phrase -> Phrase
   -- Flipping the lookup function result in a function that takes a tuplelist
@@ -108,8 +108,7 @@ rulesCompile :: [(String, [String])] -> BotBrain
 -- second map2 f1 f2 maps f1 over String and f2 over [String] in (String, [String])
 -- the last map maps a function that sets the string to lowercase on a char to
 -- char basis and then splits the converted string into words (= Phrase).
-rulesCompile = map (map2 (words . map toLower, map (words . map toLower)))
-
+rulesCompile = map $ map2 (words . map toLower, map words)
 
 --------------------------------------
 
@@ -139,7 +138,7 @@ reductionsApply :: [PhrasePair] -> Phrase -> Phrase
 -- function. The resulting function is then used as the function part of the
 -- next function, fix. By using the try-wrapped function with the fix function, the
 -- reduction is repeated until it no longer changes the supplied string.
-reductionsApply r = fix $ try $ transformationsApply "*" id r
+reductionsApply = fix . try . transformationsApply "*" id
 
 
 -------------------------------------------------------
@@ -240,10 +239,8 @@ transformationApply wc f xs (t1, t2) = mmap (substitute wc t2)  (mmap f $ match 
 -- Applying a list of patterns until one succeeds
 transformationsApply :: Eq a => a -> ([a] -> [a]) -> [([a], [a])] -> [a] -> Maybe [a]
 -- If the list supplied as the third argument is consumed evaluate to Nothing.
-transformationsApply _ _ [] _ = Nothing
 -- Evaluate transformationApply applied on the first element of the list
 -- supplied as the 3'rd attribute. If it evaluates to Nothing call self
 -- recursively with the tail part of the 3'rd attribute, otherwise evaluate to
 -- the result of the transformationApply.
-transformationsApply wc f (x:xs) ys = orElse (transformationApply wc f ys x)
-  (transformationsApply wc f xs ys)
+transformationsApply wc f xs = foldr1 orElse . flip map xs . transformationApply wc f
