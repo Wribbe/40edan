@@ -243,4 +243,4 @@ transformationsApply :: Eq a => a -> ([a] -> [a]) -> [([a], [a])] -> [a] -> Mayb
 -- supplied as the 3'rd attribute. If it evaluates to Nothing call self
 -- recursively with the tail part of the 3'rd attribute, otherwise evaluate to
 -- the result of the transformationApply.
-transformationsApply wc f xs = foldr1 orElse . flip map xs . transformationApply wc f
+transformationsApply = ((((foldr1 orElse .) .) . flip ((.) . flip map)) .) . transformationApply

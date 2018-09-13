@@ -9,8 +9,8 @@ Overall, this is a very good and readable solution. You will have to fix the fol
 
 [x] Remove the "r" parameter of "reductionsApply" to make it point-free.
 
-[] Rewrite "transformationsApply" in point-free style. (Hint: You may find the
-   fold functions in the standard prelude useful.)
+[x] Rewrite "transformationsApply" in point-free style. (Hint: You may find the
+    fold functions in the standard prelude useful.)
 
 Some of the above is arguably a matter of taste. However, in this course we
 want you to (at least initially) stick to a particular programming style, in
